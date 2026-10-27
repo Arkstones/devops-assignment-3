@@ -1,0 +1,15 @@
+# Run the app with Docker Compose:
+#   docker compose build
+#   docker compose run --rm devops-tool system-info
+#   docker compose run --rm devops-tool check-port github.com 443
+
+services:
+  devops-tool:
+    build: .
+    image: devops-tool
+    # default command, replaced by whatever comes after the service name in "compose run"
+    command: ["help"]
+    # the app only reads information, so lock the container down
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
