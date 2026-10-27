@@ -63,6 +63,7 @@ run_test "check-host localhost resolves"         0 "127.0.0.1"        check-host
 run_test "check-host accepts an IP address"      0 "127.0.0.1"        check-host 127.0.0.1
 run_test "check-host rejects bad characters"     2 "not a valid"      check-host "bad;host"
 run_test "check-host unknown host returns 1"     1 "could not resolve" check-host does-not-exist.invalid
+run_test "check-host rejects a leading dash"   2 "not a valid      check-host -badhost
 
 # ---------- check-port: invalid input ----------
 run_test "check-port without a port returns 2"   2 "needs a port"     check-port localhost
