@@ -1,0 +1,48 @@
+# CI pipeline: validate -> test -> docker
+# Each job only starts if the one before it passed (that is what "needs:" does).
+
+name: CI
+
+on:
+  push:
+  pull_request:
+
+# the pipeline only reads the code, it never writes to the repo
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate (lint)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v5
+
+      - name: Make sure ShellCheck is installed
+        run: command -v shellcheck || (sudo apt-get update && sudo apt-get install -y shellcheck)
+
+      - name: Run lint
+        run: ./scripts/lint.sh
+
+  test:
+    name: Test
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v5
+
+      - name: Run the test suite
+        run: ./tests/test.sh
+
+  docker:
+    name: Docker build and smoke tests
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v5
+
+      - name: Build the image and run smoke tests
+        run: ./scripts/build.sh
