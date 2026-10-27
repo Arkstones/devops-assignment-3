@@ -17,7 +17,7 @@ assignment-3/
 │   ├── lint.sh             # required files + bash -n + ShellCheck
 │   └── build.sh            # docker build + smoke tests
 ├── tests/
-│   └── test.sh             # 20 tests for app.sh
+│   └── test.sh             # 21 tests for app.sh
 ├── .github/
 │   └── workflows/
 │       └── ci.yml          # validate -> test -> docker
@@ -90,12 +90,12 @@ These are the same commands the CI pipeline runs:
 
 ### What the tests cover
 
-`tests/test.sh` has 20 tests:
+`tests/test.sh` has 21 tests:
 
 - **help:** `help` and `--help`
 - **system-info:** output, kernel line, and extra arguments rejected
 - **Invalid commands:** missing command and invalid command
-- **check-host:** missing host, `localhost`, an IP address, bad characters, and an unknown host. The unknown host uses the reserved `.invalid` domain, so it fails the same way everywhere.
+- **check-host:** missing host, `localhost`, an IP address, bad characters, a name starting with `-`, and an unknown host. The unknown host uses the reserved `.invalid` domain, so it fails the same way everywhere.
 - **check-port:**
   - Invalid input: missing port, non-numeric, `0`, `65536`, negative, and a bad host
   - A closed port, which returns 1
